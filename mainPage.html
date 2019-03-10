@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <div id="userPrompt">
+      <input autofocus type="text" id="userName" placeholder="Please enter your name">
+      <button type="button" id="submitUserName" onclick="submitUserName()">Submit</button>
+    </div>
+    <div id="messenger" hidden>
+      <div class="status">
+        Server connection: <span id="serverStatus"></span>
+      </div>
+      <div class="display">
+        <ul id="messageList">
+        </ul>
+      </div>
+        <input id="inputText" type="text" name="message" placeholder="Type your message here">
+        <button type="button" id="sendButton" onclick="sendMessage()">Send!</button>
+    </div>
+
+  </body>
+  <script type="text/javascript">
+    // HTML CODE
+    let userName;
+    let inputText = document.getElementById('inputText');
+
+    const submitUserName = function(){
+      userName = document.getElementById('userName').value;
+      let userPrompt = document.getElementById('userPrompt')
+      let messenger = document.getElementById('messenger');
+      userPrompt.setAttribute('hidden', true);
+      userPrompt.removeAttribute('autofocus');
+      messenger.removeAttribute('hidden');
+      inputText.setAttribute('autofocus', true);
+      inputText.focus();
+      setTimeout(enableEnterKey, 1000);
+      console.log('New user: ' + userName);
+    }
+
+    const enableEnterKey = function(){
+      inputText.addEventListener('keyup', function(event){
+        if(event.keyCode === 13){
+          document.getElementById("sendButton").click();
+        }
+      })
+    }
+
+    // Create WebSocket connection.
+    const socket = new WebSocket('ws://108.46.131.229:8080');
+
+    // Connection opened
+    socket.onopen = function(event){
+      displayMessage('System Message: Connection with the server established');
+      document.getElementById('serverStatus').innerHTML = 'Open -';
+    }
+
+    socket.onclose = function(event){
+      displayMessage('System Message: Connection with the server closed');
+      document.getElementById('serverStatus').innerHTML = 'Closed';
+    }
+
+    // Listen for messages
+    socket.onmessage = function(message){
+      let messageText = message.data;
+      displayMessage(messageText);
+    }
+
+
+    const sendMessage = function (){
+      let messageText = document.getElementById("inputText").value;
+      let message = `${userName}: ${messageText}`
+      socket.send(message);
+      document.getElementById("inputText").value = "";
+    }
+
+    const displayMessage = function(message){
+      var node = document.createElement("DIV");
+      var textNode = document.createTextNode(message);
+      node.appendChild(textNode);
+      document.getElementById("messageList").appendChild(node);
+    }
+  </script>
+</html>
