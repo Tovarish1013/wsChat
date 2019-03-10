@@ -38,6 +38,7 @@
       inputText.focus();
       setTimeout(enableEnterKey, 1000);
       console.log('New user: ' + userName);
+      socket.send(`${userName} connected to server`);
     }
 
     const enableEnterKey = function(){
