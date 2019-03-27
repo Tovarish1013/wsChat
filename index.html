@@ -2,23 +2,25 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>wsSimpleChat</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
-    <div id="userPrompt">
-      <input autofocus type="text" id="userName" placeholder="Please enter your name">
-      <button type="button" id="submitUserName" onclick="submitUserName()">Submit</button>
+    <div id="userPrompt" class="input-group mb-3" style="padding:50px">
+      <input autofocus class="form-control" type="text" id="userName" placeholder="Please enter your name">
+      <button type="button" class="btn btn-outline-secondary" id="submitUserName" onclick="submitUserName()">Submit</button>
     </div>
-    <div id="messenger" hidden>
-      <div class="status">
+    <div id="messenger" style="margin:25px;padding:25px;max-height:900px;max-width: 90%; min-width: 20%;border:solid 1px black" >
+      <div class="status p-3 mb-2 bg-primary text-white">
         Server connection: <span id="serverStatus"></span>
       </div>
-      <div class="display">
-        <ul id="messageList">
-        </ul>
+      <div id="messageList" class="display overflow-auto p-3 mb-2 bg-secondary text-white" style="max-height:80%">
+
       </div>
-        <input id="inputText" type="text" name="message" placeholder="Type your message here">
-        <button type="button" id="sendButton" onclick="sendMessage()">Send!</button>
+      <div class="input-group mb-3">
+        <input class="form-control" id="inputText" type="text" name="message" placeholder="Type your message here">
+        <button class="btn btn-outline-secondary" type="button" id="sendButton" onclick="sendMessage()">Send!</button>
+      </div>
     </div>
 
   </body>
@@ -50,7 +52,8 @@
     }
 
     // Create WebSocket connection.
-    const socket = new WebSocket('ws://ws-simple-chat-1.herokuapp.com/');
+    const socketUrl = 'ws://ws-simple-chat-1.herokuapp.com/'
+    const socket = new WebSocket(socketUrl);
 
     // Connection opened
     socket.onopen = function(event){
@@ -78,7 +81,7 @@
     }
 
     const displayMessage = function(message){
-      var node = document.createElement("DIV");
+      var node = document.createElement("P");
       var textNode = document.createTextNode(message);
       node.appendChild(textNode);
       document.getElementById("messageList").appendChild(node);
