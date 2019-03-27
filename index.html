@@ -6,23 +6,26 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
-    <div id="userPrompt" class="input-group mb-3" style="padding:50px">
-      <input autofocus class="form-control" type="text" id="userName" placeholder="Please enter your name">
-      <button type="button" class="btn btn-outline-secondary" id="submitUserName" onclick="submitUserName()">Submit</button>
-    </div>
-    <div id="messenger" style="margin:25px;padding:25px;max-height:900px;max-width: 90%; min-width: 20%;border:solid 1px black" >
-      <div class="status p-3 mb-2 bg-primary text-white">
-        Server connection: <span id="serverStatus"></span>
+    <div>
+      <div id="userPrompt" class="input-group mb-3" style="padding:50px">
+        <input autofocus class="form-control" type="text" id="userName" placeholder="Please enter your name">
+        <button type="button" class="btn btn-outline-secondary" id="submitUserName" onclick="submitUserName()">Submit</button>
       </div>
-      <div id="messageList" class="display overflow-auto p-3 mb-2 bg-secondary text-white" style="max-height:80%">
+      <div id="messenger" style="margin:25px;padding:25px;max-height:900px;max-width: 90%; min-width: 20%;border:solid 1px black">
+        <div class="status p-3 mb-2 bg-primary text-white">
+          Server connection: <span id="serverStatus"></span>
+        </div>
+        <div id="messageDisplay" class="display p-3 mb-2 bg-secondary text-white" style="display:block;max-height:70vh;overflow:auto">
+          <div id="messageList" style="max-height:100%">
 
-      </div>
-      <div class="input-group mb-3">
-        <input class="form-control" id="inputText" type="text" name="message" placeholder="Type your message here">
-        <button class="btn btn-outline-secondary" type="button" id="sendButton" onclick="sendMessage()">Send!</button>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input class="form-control" id="inputText" type="text" name="message" placeholder="Type your message here">
+          <button class="btn btn-outline-secondary" type="button" id="sendButton" onclick="sendMessage()">Send!</button>
+        </div>
       </div>
     </div>
-
   </body>
   <script type="text/javascript">
     // HTML CODE
@@ -83,8 +86,10 @@
     const displayMessage = function(message){
       var node = document.createElement("P");
       var textNode = document.createTextNode(message);
+      var scrollElement = document.getElementById("messageDisplay");
       node.appendChild(textNode);
       document.getElementById("messageList").appendChild(node);
+      scrollElement.scrollTop = scrollElement.scrollHeight;
     }
   </script>
 </html>
